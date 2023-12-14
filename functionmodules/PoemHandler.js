@@ -19,7 +19,7 @@ PoemHandler.postPoems = function(req, res, next){
 
     const reqPoem = req.body;
     Poem.create({ ...reqPoem, email: req.user.email })
-        .then(createdPoem => res.status(201).send(createdPoem))
+        .then(createdPoem => res.status(201).send(createdPoem.title))
         .catch(err => {
             console.error('Error:', err);
             next(err)});

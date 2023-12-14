@@ -41,6 +41,17 @@ Themer.fetchTheme = async function (req, res, next) {
     }
 }
 
+Themer.fetchUserTheme =async function (req, res, next) {
+    try {
+        const themeName = req.query.themeName; // Assuming themeName is the parameter for the specific theme
+        const theme = await getThemeFromDB(themeName);
+        res.status(200).send({ theme });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+}
+
 Themer.fetchAllThemes = async function (req, res, next) {
    
      try {
@@ -74,14 +85,25 @@ async function generatePoemTiles(theme, existingTheme) {
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo-1106',
         messages: conversation,
-        max_tokens: 150,  // Adjust based on your preference
-        n: 1,  // Number of phrases to generate
+        max_tokens: 150,  // Number of tokens 
+        n: 1,  // Number of chat responses to generate
         temperature: 0.75,  // You can experiment with temperature
         response_format: { type: 'json_object' },  // Enable JSON mode
     });
 
     const phrases = response.choices.map(choice => choice.message.content.trim());
-    return phrases;
+     const innerArrayStr = phrases.phrases[0];
+
+   // console.log('innerArrayStr:', innerArrayStr);
+
+    // Parse the inner array string as JSON
+    const innerArray = JSON.parse(innerArrayStr);
+    //console.log('innerArray', innerArray);
+
+    // Access the phrases array
+    const readyphrases = innerArray.phrases;
+//return phrases
+    return readyphrases;
 }
 
 //response.choices[0].message.content

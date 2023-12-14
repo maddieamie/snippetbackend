@@ -5,9 +5,10 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-//const verifyUser= require('./functionmodules/authorize.js');
+const verifyUser= require('./functionmodules/authorize.js');
 const Themer = require('./functionmodules/Themer.js');
 const Fetcher = require('./functionmodules/Fetcher.js');
+const PoemHandler = require('./functionmodules/PoemHandler.js');
 
 
 
@@ -31,37 +32,35 @@ db.once('open', () => console.log('Mongoose is connected'));
 
 app.get('/', (req, res, next) => res.status(200).send('Default Route working'));
 
-//app.use(verifyUser);
+//<--- Verify user functions --->
+app.use(verifyUser);
 
-/*app.get('/user', handleGetUser);
+app.get('/user', handleGetUser);
 function handleGetUser(req, res) {
     console.log('Getting the user');
     res.send(req.user);
   }
-*/
+
 //<------ Theme requests ------- >
 
-app.post('/generate-theme', Themer.makeTheme);
+app.post('/generate-theme?theme=', Themer.makeTheme);
 app.get('/get-themes', Themer.fetchTheme);
 app.get('/get-all-themes', Themer.fetchAllThemes);
-app.get('/get-Reg', Fetcher.fetchReg);
-app.get('/get-Reg2', Fetcher.fetchReg2);
+app.get('/get-witchy', Fetcher.fetchWitchy);
+app.get('/get-seattle', Fetcher.fetchSeattle);
+app.get('/get-bb', Fetcher.fetchBB);
+app.get('/get-lgbt', Fetcher.fetchlgbt);
 app.get('/get-RP', Fetcher.fetchRP);
 
 //<--------- User Poem Requests ---------------->
 
-/*
+
 app.get('/poems', PoemHandler.getPoems);
 app.post('/poems', PoemHandler.postPoems);
 app.delete('/poems/:id', PoemHandler.deletePoems);
 app.put('/poems/:id', PoemHandler.putPoems);
-//app.get('/user', handleGetUser); */
+app.get('/get-themes-user', Themer.fetchUserTheme);
 
-/*
-function handleGetUser(req, res) {
-    console.log('Getting the user');
-    res.send(req.user);
-  } */
 
 app.get('*', (req, res, next) => res.status(404).send('Resource not Found'));
 
