@@ -1,4 +1,5 @@
-
-{ "phrases": [ "{\n  \"belief\",\n    \"beneath\",\n    \"boss\",\n       \"chocolate\",\n     \"confession\",\n    \"control\",\n    \"crush\",\n    \"cry\",\n    \"dear\",\n    \"dress\",\n    \"e\",\n    \"fabulous\",\n    \"fashion\",\n    \"feel\",\n    \"friend\",\n    \"hour\",\n    \"house\",\n      \"job\",\n    \"kiss\",\n    \"laughter\",\n    \"love\",\n     \"night\",\n    \"power\",\n       \"r\",\n    \"revelation\",\n    \"rule\",\n    \"scream\",\n   \n       \"soul\",\n    \"tell\",\n    \"thing\",\n    \"time\",\n    \"toy\",\n    \"trouble\",\n      \"wink\",\n  \"work\",\n   ]\n}"
-]
+{
+    "phrases": [
+        "{\n  \"phrases\": [\n    \"belief\",\n    \"beneath\",\n    \"boss\",\n       \"chocolate\",\n     \"confession\",\n    \"control\",\n    \"crush\",\n    \"cry\",\n    \"dear\",\n    \"dress\",\n    \"e\",\n    \"fabulous\",\n    \"fashion\",\n    \"feel\",\n    \"friend\",\n    \"hour\",\n    \"house\",\n      \"job\",\n    \"kiss\",\n    \"laughter\",\n    \"love\",\n     \"night\",\n    \"power\",\n       \"r\",\n    \"revelation\",\n    \"rule\",\n    \"scream\",\n   \n       \"soul\",\n    \"tell\",\n    \"thing\",\n    \"time\",\n    \"toy\",\n    \"trouble\",\n      \"wink\",\n  \"work\"\n  ]\n}"
+    ]
 }

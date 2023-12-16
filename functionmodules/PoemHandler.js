@@ -6,8 +6,8 @@ const PoemHandler = {};
 
 PoemHandler.getPoems = function(req, res, next){
 
-  console.log('REQUEST BODY: ', req.body, req.user.email)
-
+  
+  console.log('User Email:', req.user.email);
   Poem.find({ email: req.user.email })
       .then(data => res.status(200).send(data))
       .catch(err => {
