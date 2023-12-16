@@ -11,7 +11,7 @@ const Fetcher = {};
 
 Fetcher.fetchSeattle = async function (req, res) {
 try {
-    headers= req.headers.authorization;
+    //headers= req.headers.authorization;
 
     const innerArrayStr = await Seattle.phrases[0];
 
@@ -36,7 +36,7 @@ catch (error) {
 
 Fetcher.fetchWitchy = async function (req, res) {
     try {
-        headers= req.headers.authorization;
+        //headers= req.headers.authorization;
         const innerArrayStr = await Witchy.phrases[0];
 
         // console.log('innerArrayStr:', innerArrayStr);
@@ -60,7 +60,7 @@ Fetcher.fetchWitchy = async function (req, res) {
 
 Fetcher.fetchRP = async function (req, res) {
         try {
-            headers= req.headers.authorization;
+            //headers= req.headers.authorization;
             const innerArrayStr = await RPData.phrases[0];
     
             // console.log('innerArrayStr:', innerArrayStr);
@@ -85,7 +85,7 @@ Fetcher.fetchRP = async function (req, res) {
 
 Fetcher.fetchBB = async function (req, res) {
     try {
-        headers= req.headers.authorization;
+        //headers= req.headers.authorization;
         const innerArrayStr = await BB.phrases[0];
 
         // console.log('innerArrayStr:', innerArrayStr);
@@ -110,7 +110,7 @@ Fetcher.fetchBB = async function (req, res) {
 
 Fetcher.fetchlgbt = async function (req, res) {
     try {
-        headers= req.headers.authorization;
+        //headers= req.headers.authorization;
         const innerArrayStr = await lgbt.phrases[0];
 
         // console.log('innerArrayStr:', innerArrayStr);

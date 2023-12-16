@@ -8,17 +8,29 @@ const jwksClient = require('jwks-rsa'); // auth
 function verifyUser(request, response, next) {
 
   function valid(err, user) {
-    request.user = user;
-    next();
+    if (err) {
+      console.error('JWT verification error:', err);
+      next('Not Authorized');
+    } else {
+      console.log('User:', user);
+      request.user = user;
+      next();
+    }
   }
 
   try {
-    const token = request.headers.authorization.split(' ')[1];
+    if (!request.headers.authorization) {
+      throw new Error('Authorization header is missing');
+    }
+    const token = request.headers.authorization.split(' ')[1] || request.headers.authorization;
+    console.log('Received token:', token);
     jwt.verify(token, getKey, {}, valid);
   } catch (error) {
+    console.error('Error during token verification:', error);
     next('Not Authorized');
   }
 }
+
 
 
 // =============== HELPER METHODS, pulled from the jsonwebtoken documentation =================== //
