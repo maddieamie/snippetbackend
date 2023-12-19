@@ -1,10 +1,11 @@
 'use strict'
-
+const mongoose = require('mongoose');
+require('dotenv').config();
 const Poem = require('../model/Poem'); 
 
 const PoemHandler = {};
 
-PoemHandler.getPoems = function(req, res, next){
+PoemHandler.getPoems = async function(req, res, next){
 
   
   console.log('User Email:', req.user.email);
@@ -15,7 +16,7 @@ PoemHandler.getPoems = function(req, res, next){
         next(err)});
 };
 
-PoemHandler.postPoems = function(req, res, next){
+PoemHandler.postPoems = async function(req, res, next){
 
     const reqPoem = req.body;
     Poem.create({ ...reqPoem, email: req.user.email })
@@ -25,13 +26,13 @@ PoemHandler.postPoems = function(req, res, next){
             next(err)});
 }
 
-PoemHandler.deletePoems = function (req, res, next) {
+PoemHandler.deletePoems = async function (req, res, next) {
     const { id } = req.params;
   
     Poem.findOne({ _id: id, email: req.user.email })
       .then((poem) => {
         if (!poem) {
-          res.status(400).send('Unable to delete poem');
+          res.status(400).send('Unable to delete poem, there is no poem present');
         } else {
           return Poem.findByIdAndDelete(id);
         }
@@ -58,7 +59,7 @@ PoemHandler.deletePoems = function (req, res, next) {
       .then(existingPoem => {
         console.log(existingPoem);
         if (!existingPoem) {
-          res.status(400).send('Unable to update poem');
+          res.status(400).send('Unable to update poem, no existing poem with that id');
         } else {
          
           return Poem.findByIdAndUpdate(
