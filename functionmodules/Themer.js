@@ -17,7 +17,8 @@ const openai = new OpenAI(apikey);
 Themer.makeTheme = async function (req, res, next) {
     try {
         const theme = req.query.theme;
-        const existingTheme = await getThemeFromDB(theme, req.user.email);
+
+        const existingTheme = await getThemeFromDB({theme, email: req.user.email});
 
         const phrases = await generatePoemTiles(theme, existingTheme);
 
@@ -101,7 +102,6 @@ async function generatePoemTiles(theme, existingTheme) {
 
    // console.log('innerArrayStr:', innerArrayStr);
 
-    // Parse the inner array string as JSON
     const innerArray = JSON.parse(phrases);
     //console.log('innerArray', innerArray);
 
