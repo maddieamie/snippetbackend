@@ -19,11 +19,22 @@ const PORT = process.env.PORT || 3046;
 const username = process.env.username;
 const password = process.env.password;
 const clusterName = process.env.clusterName;
-mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
+mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`, {
+    autoReconnect: true,
+    reconnectTries: Number.MAX_VALUE, // Retry indefinitely
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error to MDB'));
+db.on('disconnected', () => {
+    console.log('MongoDB disconnected. Reconnecting...');
+});
+db.on('reconnected', () => {
+    console.log('MongoDB reconnected');
+});
 db.once('open', () => console.log('Mongoose is connected'));
 
 app.get('/', (req, res, next) => res.status(200).send('Default Route working'));
