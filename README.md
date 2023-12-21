@@ -49,6 +49,5 @@ Languages: Node, Mongoose, Express, Cors
 
 Services: OpenAI API, Netlify, Render, MongoDB Atlas
 
-# Domain Model
-
 # Database Model
+![Server DB Model (1)](https://github.com/maddieamie/snippetbackend/assets/118625447/329bfcb9-c828-482a-a192-d1e4e07b7fab)
