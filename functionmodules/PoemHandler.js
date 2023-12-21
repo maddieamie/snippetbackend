@@ -1,5 +1,5 @@
 'use strict'
-const mongoose = require('mongoose');
+require('mongoose');
 require('dotenv').config();
 const Poem = require('../model/Poem'); 
 
