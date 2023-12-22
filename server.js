@@ -19,10 +19,7 @@ const PORT = process.env.PORT || 3046;
 const username = process.env.username;
 const password = process.env.password;
 const clusterName = process.env.clusterName;
-mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
 
 const db = mongoose.connection;
 
