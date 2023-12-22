@@ -1,14 +1,12 @@
 'use strict';
 
-const mongoose = require('mongoose');
 require('dotenv').config();
 const OpenAI = require('openai');
+const ColorTheme = require('../data/Colorful.json');
 
 
 const Themer = {};
-const username = process.env.username;
-const password = process.env.password;
-const clusterName = process.env.clusterName;
+
 const apikey= process.env.OPENAI_API_KEY;
 
 
@@ -43,7 +41,9 @@ Themer.fetchTheme = async function (req, res, next) {
         res.status(200).send({ array});
     } catch (error) {
         console.error(error);
-        res.status(500).send({ error: 'Internal Server Error' });
+        const colors = await ColorTheme[0].phrases;
+        res.status(200).send(colors);
+
     }
 }
 
@@ -62,14 +62,16 @@ Themer.fetchAllThemes = async function (req, res, next) {
    
      try {
             
-        await mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
-        const db = mongoose.connection;
+        /*await mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
+        const db = mongoose.connection; */
         const collection = db.collection('themes');
     
         const responses = await collection.find({}).toArray();
         res.status(200).send({ responses });
-     } finally {
-        await mongoose.disconnect();
+     } catch {
+        console.error(error);
+        
+
         }
     
 }
@@ -115,21 +117,20 @@ async function generatePoemTiles(theme, existingTheme) {
 
 async function saveThemeToDB(response) {
     try {
-        await mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
-        const db = mongoose.connection;
         const collection = db.collection('themes');
 
         // Insert the response into the database
         await collection.insertOne(response);
-    } finally {
-        await mongoose.disconnect();
+        res.status(200).send('theme saved');
+    } catch {
+        console.error(error);
+        res.status(500).sent('Internal MongoDB saving error');
     }
 }
 
 async function getThemeFromDB(themeName) {
     try {
-        await mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
-        const db = mongoose.connection;
+
         const collection = db.collection('themes');
         const theme = themeName;
         
@@ -137,8 +138,9 @@ async function getThemeFromDB(themeName) {
         // Retrieve the specific theme from the database based on themeName
         const response = await collection.findOne(theme);
         return response ? [response] : []; // Return an array for consistency with other functions
-    } finally {
-        await mongoose.disconnect();
+    } catch{
+        console.error(error);
+        res.status(500).sent('Cannot find theme');
     }
 }
 
