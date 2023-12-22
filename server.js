@@ -20,8 +20,6 @@ const username = process.env.username;
 const password = process.env.password;
 const clusterName = process.env.clusterName;
 mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`, {
-    autoReconnect: true,
-    reconnectTries: Number.MAX_VALUE, // Retry indefinitely
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
