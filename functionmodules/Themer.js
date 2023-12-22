@@ -3,6 +3,7 @@
 require('dotenv').config();
 const OpenAI = require('openai');
 const ColorTheme = require('../data/Colorful.json');
+const Theme = require('../model/Theme.js');
 
 
 const Themer = {};
@@ -25,25 +26,31 @@ Themer.makeTheme = async function (req, res, next) {
         res.status(201).send({ phrases });
     } catch (error) {
         console.error(error);
-        res.status(500).send({ error: 'Internal Server Error' });
+        res.status(500).send('Internal Server Error' );
     }
 }
 
 Themer.fetchTheme = async function (req, res, next) {
     try {
         const theme = req.query.theme; 
+        const email = req.user.email;
         
         console.log('themename', theme)
         console.log('email', req.user.email)// Assuming themeName is the parameter for the specific theme
-        const foundtheme = await getThemeFromDB({theme, email: req.user.email});
-        const array = foundtheme[0].phrases;
-        console.log(array);
-        res.status(200).send({ array});
+        const foundTheme = await getThemeFromDB({ theme, email });
+
+        if (foundTheme && foundTheme.length > 0) {
+            const array = foundTheme[0].phrases;
+            res.status(200).send({ array });
+        } else {
+            const colors = ColorTheme[0].phrases;
+            const innerArray = JSON.parse(colors);
+            const phrases = innerArray.phrases;
+            res.status(200).send({ phrases });
+        }
     } catch (error) {
         console.error(error);
-        const colors = await ColorTheme[0].phrases;
-        res.status(200).send(colors);
-
+        res.status(500).send({ error: 'Internal Server Error' });
     }
 }
 
@@ -59,21 +66,13 @@ Themer.fetchTheme = async function (req, res, next) {
 // }
 
 Themer.fetchAllThemes = async function (req, res, next) {
-   
-     try {
-            
-        /*await mongoose.connect(`mongodb+srv://${username}:${password}@${clusterName}.wopnada.mongodb.net/?retryWrites=true&w=majority`);
-        const db = mongoose.connection; */
-        const collection = db.collection('themes');
-    
-        const responses = await collection.find({}).toArray();
+    try {
+        const responses = await Theme.find({});
         res.status(200).send({ responses });
-     } catch {
+    } catch (error) {
         console.error(error);
-        
-
-        }
-    
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
 }
 
 
@@ -117,30 +116,22 @@ async function generatePoemTiles(theme, existingTheme) {
 
 async function saveThemeToDB(response) {
     try {
-        const collection = db.collection('themes');
-
-        // Insert the response into the database
-        await collection.insertOne(response);
-        res.status(200).send('theme saved');
-    } catch {
+        const theme = new Theme(response);
+        await theme.save();
+        console.log('Theme saved successfully');
+    } catch (error) {
         console.error(error);
-        res.status(500).sent('Internal MongoDB saving error');
+        throw new Error('Internal MongoDB saving error');
     }
 }
 
-async function getThemeFromDB(themeName) {
+async function getThemeFromDB({ theme, email }) {
     try {
-
-        const collection = db.collection('themes');
-        const theme = themeName;
-        
-        console.log(theme);
-        // Retrieve the specific theme from the database based on themeName
-        const response = await collection.findOne(theme);
-        return response ? [response] : []; // Return an array for consistency with other functions
-    } catch{
+        const foundTheme = await Theme.find({ theme, email });
+        return foundTheme;
+    } catch (error) {
         console.error(error);
-        res.status(500).sent('Cannot find theme');
+        throw new Error('Cannot find theme');
     }
 }
 
