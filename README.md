@@ -15,7 +15,16 @@ It is a place for creative associations with a generated theme. Users could use 
 
 # Versions & Updates
 
-### Version 3 (current)
+### Version 4 (current)
+*12-21-23*
+
+Theme requests now match Poem Requests to MongoDB.
+- rewritten Themer function modules
+- created Schema for Theme
+- addressed disconnect errors from MongoDb.
+
+
+### Version 3 
 *12-20-23*
 
 - Edited mongoose requirements in PoemHandler & added it into Poem Schema, in an effort to address ghosting MongoDBNotConnecting error
