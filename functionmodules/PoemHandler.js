@@ -1,7 +1,8 @@
 'use strict'
-require('mongoose');
+
 require('dotenv').config();
 const Poem = require('../model/Poem'); 
+const Backups = require('../data/Poems.json');
 
 const PoemHandler = {};
 
@@ -12,8 +13,9 @@ PoemHandler.getPoems = async function(req, res, next){
   Poem.find({ email: req.user.email })
       .then(data => res.status(200).send(data))
       .catch(err => {
-        console.error('Error:', err);
-        next(err)});
+       { console.error('Error:', err);
+        const backuppoems = Backups;
+        res.status(204).send(backuppoems);}})
 };
 
 PoemHandler.postPoems = async function(req, res, next){
